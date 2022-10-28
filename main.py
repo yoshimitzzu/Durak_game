@@ -62,3 +62,24 @@ class Durak:
                 card[1] = card[1] + 9
         return self.cards
 
+    def get_mast(self, card):  # узнает масть карты
+        new_list = card.rsplit('_')
+        self.mast = new_list[1]
+        return self.mast
+
+    def whos_first_turn(self):
+        player_smallest_card = min(item[1] for item in self.player_cards)
+        # цикл перебора вторых элементов подсписков(силы)
+        comp_smallest_card = min(item[1] for item in self.comp_cards)
+        if player_smallest_card < comp_smallest_card:
+            self.turn = True
+            self.player_turn(Durak)
+        else:
+            self.turn = False
+            self.comp_turn(Durak)
+
+    def game_start(self):
+        self.table = []
+        self.gen_kozyr_list(Durak)
+        self.gen_cards(Durak)
+        self.whos_first_turn(Durak)
