@@ -31,3 +31,34 @@ class Durak:
         self.cards = self.spades + self.club + self.hearts + self.diamonds
         random.shuffle(self.cards)
         return self.cards
+
+    def gen_cards(self):
+        # раздает карты, не больше 6 в начальной руке. выход: два списка с уникальными картами у каждого игрока
+
+        self.player_cards = []
+        for card in range(6):
+            player_card = random.choice(self.cards)
+            self.player_cards.append(player_card)  # добавляет в список игрока(в руку игрока) карту
+            self.cards.remove(player_card)  # удаляет из общего числа карт сгенерированную карту
+
+        self.comp_cards = []
+        for card in range(6):
+            comp_card = random.choice(self.cards)
+            self.comp_cards.append(comp_card)  # как и у игрока
+            self.cards.remove(comp_card)
+
+        print('Ваши карты: ', list((item[0] for item in self.player_cards))), print('Карты помпьютера: ', list(
+            (item[0] for item in self.comp_cards))), print('Козырь: ', self.get_mast(Durak, self.kozyr[0]))
+
+        return self.player_cards, self.comp_cards
+
+    def gen_kozyr_list(self):  # пересоздает список с картами, имеющие масть козыря, изменяя силу карт
+        kozyr_card = random.choice(self.cards)
+        self.kozyr = kozyr_card
+        new_list = self.kozyr[0].rsplit('_')
+        self.mast_kozyr = new_list[1]
+        for card in self.cards:
+            if self.mast_kozyr in card[0]:
+                card[1] = card[1] + 9
+        return self.cards
+
